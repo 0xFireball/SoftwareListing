@@ -63,9 +63,17 @@ def main():
         item_props = flatten(item_info, '.')
 
         # load template
+        page_tpl_path = f'{template_items_path}/page.{tpl_ext}'
+        with open(page_tpl_path) as page_tpl_file:
+            page_tpl = page_tpl_file.read()
+
         tpl_path = f'{template_items_path}/{item_info["type"]}.{tpl_ext}'
         with open(tpl_path) as tpl_file:
             tpl_cont = tpl_file.read()
+
+        st = StacheProcessor(page_tpl)
+        st.put('page', tpl_cont)
+        tpl_cont = st.read()
 
         tpl_gen = []
         for template in [tpl_cont, item_info_template]:
