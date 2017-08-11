@@ -67,7 +67,7 @@ typings/
 __pycache__/
 *.py[cod]
 # stuff
-
+dist/
 
 *$py.class
 
