@@ -106,5 +106,12 @@ def main():
     with open(index_output_path, 'w') as index_ouf:
         index_ouf.write(st.read())
 
+    # copy assets
+    assets_dir_name = 'assets'
+    assets_src_dir = f'{template_path}/{assets_dir_name}'
+    assets_dest_dir = f'{args.dest}/{assets_dir_name}'
+    print(f'Copying {assets_src_dir} to {assets_dest_dir}')
+    copy_tree(assets_src_dir, assets_dest_dir)
+
 if __name__ == "__main__":
     main()
