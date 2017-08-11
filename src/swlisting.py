@@ -15,33 +15,47 @@ def main():
     args = parser.parse_args()
     
     # read metadata
-    metafile = 'meta.json'
-    with open(f'{args.source}/{metafile}') as meta_file:
+    meta_file = 'meta.json'
+    with open(f'{args.source}/{meta_file}') as meta_file:
         meta = json.load(meta_file)
 
     item_source = f'{args.source}/items'
     if not os.path.exists(item_source):
         print(f'Error: Item directory {item_source} does not exist.')
         sys.exit(1)
+
+    item_noun = meta["itemNoun"]
     
+    item_output_dir = f'{args.dest}/{item_noun}'
     # create output dir
-    if not os.path.exists(args.dest):
-        print(f'Creating output directory {args.dest}')
-        os.makedirs(args.dest)
+    for output_dir in [args.dest, item_output_dir]:
+        if not os.path.exists(output_dir):
+            print(f'Creating output directory {output_dir}')
+            os.makedirs(output_dir)
 
     # load and generate pages
-    itempaths = os.listdir(item_source)
+    item_paths = os.listdir(item_source)
 
     template_path = './template'
-    template_items_path = f'{template_path}/items'
+    template_items_path = f'{template_path}/{item_noun}'
 
-    for itempath in itempaths:
+    gen_item_listings = { }
+    gen_items = []
+
+    out_ext = tpl_ext = '.html'
+
+    # load listing template
+    listing_template_name = f'listing.{tpl_ext}'
+    listing_template_path = f'{template_path}/{listing_template_name}'
+
+    # generate item pages
+    for item_path in item_paths:
         # parse page
-        with open(f'{item_source}/{itempath}') as item_file:
+        with open(f'{item_source}/{item_path}') as item_file:
             item_info = json.load(item_file)
         
         # load template
-        tpl_path = f'{template_items_path}/{item_info["type"]}.html'
+        tpl_path = f'{template_items_path}/{item_info["type"]}.{tpl_ext}'
         with open(tpl_path) as tpl_file:
             tpl_cont = tpl_file.read()
 
@@ -49,7 +63,17 @@ def main():
         st.put('name', item_info['name'])
 
         res = st.read()
-        print(res)
+        # write to output file
+        item_id = item_path.split(".")[0]
+        output_file_path = f'{item_output_dir}/{item_id}.{out_ext}'
+        with open(output_file_path, 'w') as output_file:
+            output_file.write(res)
+        print(f'Generated listing page for {item_id} in {output_file_path}')
+
+        gen_items.append(item_id)
+        gen_item_listings[item_id]
+
+    # generate index page
 
 if __name__ == "__main__":
     main()

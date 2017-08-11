@@ -3,7 +3,7 @@ import re
 
 class StacheProcessor:
     def __init__(self, content):
-        self.stache = '(?:{{)\s?(WORD+)\s?(?:}})'
+        self.stache = '(?:{{)\s?(WORD)\s?(?:}})'
         self.cont = content
     
     def put(self, name, value):
