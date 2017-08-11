@@ -46,10 +46,10 @@ def main():
     out_ext = tpl_ext = 'html'
 
     # load listing template
-    listing_template_name = f'listing.{tpl_ext}'
-    listing_template_path = f'{template_path}/{listing_template_name}'
-    with open(listing_template_path) as listing_template_file:
-        listing_template = listing_template_file.read()
+    item_info_template_name = f'info.{tpl_ext}'
+    item_info_template_path = f'{template_path}/{item_info_template_name}'
+    with open(item_info_template_path) as item_info_template_file:
+        item_info_template = item_info_template_file.read()
 
     # generate item pages
     for item_path in item_paths:
@@ -68,7 +68,7 @@ def main():
             tpl_cont = tpl_file.read()
 
         tpl_gen = []
-        for template in [tpl_cont, listing_template]:
+        for template in [tpl_cont, item_info_template]:
             st = StacheProcessor(template)
 
             st.put('noun', item_noun)
@@ -90,8 +90,8 @@ def main():
 
         gen_item_listings[item_id] = tpl_gen[1] # save short listing
 
-    # generate index page
-    index_template_name = f'index.{tpl_ext}'
+    # generate listing page
+    index_template_name = f'listing.{tpl_ext}'
     index_listing_path = f'{template_path}/{index_template_name}'
     with open(index_listing_path) as index_tpl_file:
         index_tpl = index_tpl_file.read()
@@ -102,11 +102,17 @@ def main():
         item_list_tpl += item_listing + '\n'
     st.put('listing', item_list_tpl)
 
-    # write out index page
-    index_output_path = f'{args.dest}/index.{tpl_ext}'
+    # custom props
+    for key in meta["props"].keys():
+        st.put(key, meta["props"][key])
+
+    st.put('title', meta['title'])
+
+    # write out listing page
+    index_output_path = f'{args.dest}/listing.{tpl_ext}'
     with open(index_output_path, 'w') as index_ouf:
         index_ouf.write(st.read())
-    print(f'Wrote index page to {index_output_path}')
+    print(f'Wrote listing page to {index_output_path}')
 
     # copy assets
     assets_dir_name = 'assets'

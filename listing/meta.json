@@ -1,4 +1,7 @@
 {
     "title": "Demo Listing",
-    "itemNoun": "items"
+    "itemNoun": "items",
+    "props": {
+        
+    }
 }
