@@ -6,6 +6,7 @@ import json
 import os
 import sys
 
+from flatten_json import flatten
 from stache import StacheProcessor
 
 def main():
@@ -13,7 +14,7 @@ def main():
     parser.add_argument("source", help="The source directory containing the configuration")
     parser.add_argument("dest", help="The output directory")
     args = parser.parse_args()
-    
+
     # read metadata
     meta_file = 'meta.json'
     with open(f'{args.source}/{meta_file}') as meta_file:
@@ -25,7 +26,7 @@ def main():
         sys.exit(1)
 
     item_noun = meta["itemNoun"]
-    
+
     item_output_dir = f'{args.dest}/{item_noun}'
     # create output dir
     for output_dir in [args.dest, item_output_dir]:
@@ -51,10 +52,15 @@ def main():
 
     # generate item pages
     for item_path in item_paths:
+        item_id = item_path.split(".")[0]
+
         # parse page
         with open(f'{item_source}/{item_path}') as item_file:
             item_info = json.load(item_file)
-        
+    
+        # flatten info as props
+        item_props = flatten(item_info, '.')
+
         # load template
         tpl_path = f'{template_items_path}/{item_info["type"]}.{tpl_ext}'
         with open(tpl_path) as tpl_file:
@@ -63,13 +69,19 @@ def main():
         tpl_gen = []
         for template in [tpl_cont, listing_template]:
             st = StacheProcessor(template)
-            st.put('name', item_info['name'])
+
+            st.put('noun', item_noun)
+            st.put('id', item_id)
+
+            # add properties
+            for key in item_props.keys():
+                if isinstance(item_props[key], str):
+                    st.put(key, item_props[key])
 
             res = st.read()
             tpl_gen.append(res)
 
         # write to output file
-        item_id = item_path.split(".")[0]
         output_file_path = f'{item_output_dir}/{item_id}.{out_ext}'
         with open(output_file_path, 'w') as output_file:
             output_file.write(tpl_gen[0]) # write out item listing page
