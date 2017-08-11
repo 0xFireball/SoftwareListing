@@ -96,7 +96,7 @@ def main():
     with open(itemlist_listing_path) as itemlist_tpl_file:
         itemlist_tpl = itemlist_tpl_file.read()
 
-    landing_template_name = f'landing.{tpl_ext}'
+    landing_template_name = f'index.{tpl_ext}'
     landing_template_path = f'{template_path}/{landing_template_name}'
     with open(landing_template_path) as landing_tpl_file:
         landing_tpl = landing_tpl_file.read()
