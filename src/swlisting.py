@@ -101,10 +101,12 @@ def main():
     for item_id, item_listing in gen_item_listings.items():
         item_list_tpl += item_listing + '\n'
     st.put('listing', item_list_tpl)
+
     # write out index page
     index_output_path = f'{args.dest}/index.{tpl_ext}'
     with open(index_output_path, 'w') as index_ouf:
         index_ouf.write(st.read())
+    print(f'Wrote index page to {index_output_path}')
 
     # copy assets
     assets_dir_name = 'assets'
