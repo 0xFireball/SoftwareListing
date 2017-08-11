@@ -17,9 +17,8 @@
   <nav class="navbar">
     <ul class="nav-content">
       <li class="nav-item ripple nav-brand"><a href="#">{{ title }}</a></li>
-      <li class="nav-item"><a href="./index.html">Home</a></li>
-      <li class="nav-item ripple active"><a href="#">Elements</a></li>
-      <li class="nav-item ripple"><a href="#" onclick="toggleTheme()">Toggle Theme</a></li>
+      <li class="nav-item ripple active"><a href="#">Home</a></li>
+      <li class="nav-item"><a href="./listing.html">{{ ui_noun }}</a></li>
     </ul>
   </nav>
 
@@ -32,8 +31,11 @@
 
   <section class="content container">
     <div class="row">
-      <div class="twelve columns">
-        {{ listing }}
+      <div class="six columns offset-by-three center">
+        <p>
+          {{ description }}
+        </p>
+        <a href="./listing.html" class="btn btn-default ripple">{{ ui_browse_verb }}</a>
       </div>
     </div>
   </section>

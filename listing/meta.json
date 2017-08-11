@@ -1,7 +1,9 @@
 {
-    "title": "Demo Listing",
+    "title": "Foo",
     "itemNoun": "items",
     "props": {
-        
+        "ui_noun": "Items",
+        "description": "Foo is an awesome place to browse software stuff.",
+        "ui_browse_verb": "Explore"
     }
 }
