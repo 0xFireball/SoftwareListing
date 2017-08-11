@@ -1,6 +1,6 @@
 # SoftwareListing
 
-a simple tool for making static software listings
+a simple tool for making static software listing websites
 
 ## About
 
