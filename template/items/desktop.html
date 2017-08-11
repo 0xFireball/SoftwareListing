@@ -1,3 +1,9 @@
-{{ name }}
-{{ version }}
-{{ download.win }}
+<h3>{{ name }}</h3>
+<p>Version {{ version }}</p>
+<p>{{ desc }}</p>
+<h6>Download</h6>
+<div>
+  <a class="btn btn-default btn-small ripple" href="{{ download.win }}">Windows</a>
+  <a class="btn btn-default btn-small ripple" href="{{ download.mac }}">macOS</a>
+  <a class="btn btn-default btn-small ripple" href="{{ download.lin }}">Linux</a>
+</div>

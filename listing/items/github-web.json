@@ -2,5 +2,6 @@
     "name": "GitHub",
     "type": "web",
     "page": "https://github.com",
-    "short_desc": "GitHub is"
+    "short_desc": "A web-based Git or version control repository and Internet hosting service.",
+    "desc": "GitHub is a development platform inspired by the way you work. From open source to business, you can host and review code, manage projects, and build software alongside millions of other developers."
 }

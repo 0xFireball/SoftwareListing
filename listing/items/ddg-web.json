@@ -2,5 +2,6 @@
     "name": "DuckDuckGo Web",
     "type": "web",
     "page": "https://duckduckgo.com",
-    "short_desc": "DDG is"
+    "short_desc": "The search engine that doesn't track you.",
+    "desc": "The search engine that doesn't track you."
 }
