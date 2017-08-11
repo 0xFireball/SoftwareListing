@@ -1,7 +1,8 @@
 {
     "name": "SoftwareListing",
-    "type": "web",
-    "page": "https://github.com/0xFireball/SoftwareListing",
+    "type": "git",
+    "repo": "https://github.com/0xFireball/SoftwareListing.git",
     "short_desc": "A simple tool for making static software listing websites.",
-    "desc": "SoftwareListing takes a directory of \"item\" metadata files and generates a static website that includes a \"listing\" of these items and pages for each item. The page generation is based on HTML templates that can be customized as needed."
+    "desc": "SoftwareListing takes a directory of \"item\" metadata files and generates a static website that includes a \"listing\" of these items and pages for each item. The page generation is based on HTML templates that can be customized as needed.",
+    "ui_webpage": "GitHub"
 }
