@@ -92,6 +92,8 @@ def main():
                 if isinstance(item_props[key], str):
                     st.put(key, item_props[key])
 
+            st.clean() # strip unreplaced properties
+
             res = st.read()
             tpl_gen.append(res)
 
