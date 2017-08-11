@@ -6,6 +6,8 @@ import json
 import os
 import sys
 
+from stache import StacheProcessor
+
 def main():
     parser = argparse.ArgumentParser(description = "SoftwareListing tool")
     parser.add_argument("source", help="The source directory containing the configuration")
@@ -17,9 +19,9 @@ def main():
     with open(f'{args.source}/{metafile}') as meta_file:
         meta = json.load(meta_file)
 
-    itempath = f'{args.source}/items'
-    if not os.path.exists(itempath):
-        print(f'Error: Item directory {itempath} does not exist.')
+    item_source = f'{args.source}/items'
+    if not os.path.exists(item_source):
+        print(f'Error: Item directory {item_source} does not exist.')
         sys.exit(1)
     
     # create output dir
@@ -28,13 +30,26 @@ def main():
         os.makedirs(args.dest)
 
     # load and generate pages
-    itempaths = os.listdir(itempath)
+    itempaths = os.listdir(item_source)
+
+    template_path = './template'
+    template_items_path = f'{template_path}/items'
 
     for itempath in itempaths:
         # parse page
-        with open(itempath) as item_file:
+        with open(f'{item_source}/{itempath}') as item_file:
             item_info = json.load(item_file)
         
+        # load template
+        tpl_path = f'{template_items_path}/{item_info["type"]}.html'
+        with open(tpl_path) as tpl_file:
+            tpl_cont = tpl_file.read()
+
+        st = StacheProcessor(tpl_cont)
+        st.put('name', item_info['name'])
+
+        res = st.read()
+        print(res)
 
 if __name__ == "__main__":
     main()
