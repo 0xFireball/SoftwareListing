@@ -73,6 +73,11 @@ def main():
 
         st = StacheProcessor(page_tpl)
         st.put('page', tpl_cont)
+        st.put('item_name', item_props['name'])
+        # custom props
+        for key in meta["props"].keys():
+            st.put(key, meta["props"][key])
+        st.put('title', meta['title'])
         tpl_cont = st.read()
 
         tpl_gen = []

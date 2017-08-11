@@ -1,2 +1,42 @@
-Hi
-{{ page }}
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ title }} - {{ item_name }}</title>
+  <link rel="stylesheet" href="../assets/css/ihui.min.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+  <style>
+    .intro {
+      margin-top: 2%;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <ul class="nav-content">
+      <li class="nav-item ripple nav-brand"><a href="#">{{ title }}</a></li>
+      <li class="nav-item"><a href="../index.html">{{ ui_home }}</a></li>
+      <li class="nav-item"><a href="../listing.html">{{ ui_noun }}</a></li>
+    </ul>
+  </nav>
+
+  <section class="intro container">
+    <div class="center">
+      <h2 class="big">{{ item_name }}</h2>
+    </div>
+  </section>
+
+  <section class="content container">
+    <div class="row">
+      <div class="eight columns offset-by-two">
+        {{ page }}
+      </div>
+    </div>
+  </section>
+
+  <script src="../assets/js/script.js"></script>
+</body>
+
+</html>
