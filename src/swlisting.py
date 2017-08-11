@@ -40,13 +40,14 @@ def main():
     template_items_path = f'{template_path}/{item_noun}'
 
     gen_item_listings = { }
-    gen_items = []
 
-    out_ext = tpl_ext = '.html'
+    out_ext = tpl_ext = 'html'
 
     # load listing template
     listing_template_name = f'listing.{tpl_ext}'
     listing_template_path = f'{template_path}/{listing_template_name}'
+    with open(listing_template_path) as listing_template_file:
+        listing_template = listing_template_file.read()
 
     # generate item pages
     for item_path in item_paths:
@@ -59,21 +60,38 @@ def main():
         with open(tpl_path) as tpl_file:
             tpl_cont = tpl_file.read()
 
-        st = StacheProcessor(tpl_cont)
-        st.put('name', item_info['name'])
+        tpl_gen = []
+        for template in [tpl_cont, listing_template]:
+            st = StacheProcessor(template)
+            st.put('name', item_info['name'])
 
-        res = st.read()
+            res = st.read()
+            tpl_gen.append(res)
+
         # write to output file
         item_id = item_path.split(".")[0]
         output_file_path = f'{item_output_dir}/{item_id}.{out_ext}'
         with open(output_file_path, 'w') as output_file:
-            output_file.write(res)
+            output_file.write(tpl_gen[0]) # write out item listing page
         print(f'Generated listing page for {item_id} in {output_file_path}')
 
-        gen_items.append(item_id)
-        gen_item_listings[item_id]
+        gen_item_listings[item_id] = tpl_gen[1] # save short listing
 
     # generate index page
+    index_template_name = f'index.{tpl_ext}'
+    index_listing_path = f'{template_path}/{index_template_name}'
+    with open(index_listing_path) as index_tpl_file:
+        index_tpl = index_tpl_file.read()
+
+    st = StacheProcessor(index_tpl)
+    item_list_tpl = ''
+    for item_id, item_listing in gen_item_listings.items():
+        item_list_tpl += item_listing + '\n'
+    st.put('listing', item_list_tpl)
+    # write out index page
+    index_output_path = f'{args.dest}/index.{tpl_ext}'
+    with open(index_output_path, 'w') as index_ouf:
+        index_ouf.write(st.read())
 
 if __name__ == "__main__":
     main()
