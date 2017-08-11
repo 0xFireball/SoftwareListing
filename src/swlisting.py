@@ -90,29 +90,49 @@ def main():
 
         gen_item_listings[item_id] = tpl_gen[1] # save short listing
 
-    # generate listing page
-    index_template_name = f'listing.{tpl_ext}'
-    index_listing_path = f'{template_path}/{index_template_name}'
-    with open(index_listing_path) as index_tpl_file:
-        index_tpl = index_tpl_file.read()
+    # generate listing and landing pages
+    itemlist_template_name = f'listing.{tpl_ext}'
+    itemlist_listing_path = f'{template_path}/{itemlist_template_name}'
+    with open(itemlist_listing_path) as itemlist_tpl_file:
+        itemlist_tpl = itemlist_tpl_file.read()
 
-    st = StacheProcessor(index_tpl)
+    landing_template_name = f'landing.{tpl_ext}'
+    landing_template_path = f'{template_path}/{landing_template_name}'
+    with open(landing_template_path) as landing_tpl_file:
+        landing_tpl = landing_tpl_file.read()
+
+    st = StacheProcessor(itemlist_tpl)
     item_list_tpl = ''
     for item_id, item_listing in gen_item_listings.items():
         item_list_tpl += item_listing + '\n'
     st.put('listing', item_list_tpl)
+    itemlist_tpl = st.read()
 
-    # custom props
-    for key in meta["props"].keys():
-        st.put(key, meta["props"][key])
+    tpls = []
+    for tpl in [itemlist_tpl, landing_tpl]:
+        st = StacheProcessor(tpl)
+        # custom props
+        for key in meta["props"].keys():
+            st.put(key, meta["props"][key])
 
-    st.put('title', meta['title'])
+        # default props
+        st.put('title', meta['title'])
+        tpls.append(st.read())
+
+    itemlist_tpl = tpls[0]
+    landing_tpl = tpls[1]
 
     # write out listing page
-    index_output_path = f'{args.dest}/listing.{tpl_ext}'
-    with open(index_output_path, 'w') as index_ouf:
-        index_ouf.write(st.read())
-    print(f'Wrote listing page to {index_output_path}')
+    itemlist_output_path = f'{args.dest}/listing.{tpl_ext}'
+    with open(itemlist_output_path, 'w') as itemlist_ouf:
+        itemlist_ouf.write(itemlist_tpl)
+    print(f'Wrote listing page to {itemlist_output_path}')
+
+    # write out landing page
+    landing_output_path = f'{args.dest}/index.{tpl_ext}'
+    with open(landing_output_path, 'w') as landing_ouf:
+        landing_ouf.write(landing_tpl)
+    print(f'Wrote landing page to {landing_output_path}')
 
     # copy assets
     assets_dir_name = 'assets'
