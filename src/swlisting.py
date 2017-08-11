@@ -5,6 +5,7 @@ import argparse
 import json
 import os
 import sys
+from distutils.dir_util import copy_tree
 
 from flatten_json import flatten
 from stache import StacheProcessor
@@ -20,12 +21,12 @@ def main():
     with open(f'{args.source}/{meta_file}') as meta_file:
         meta = json.load(meta_file)
 
-    item_source = f'{args.source}/items'
+    item_noun = meta["itemNoun"]
+
+    item_source = f'{args.source}/{item_noun}'
     if not os.path.exists(item_source):
         print(f'Error: Item directory {item_source} does not exist.')
         sys.exit(1)
-
-    item_noun = meta["itemNoun"]
 
     item_output_dir = f'{args.dest}/{item_noun}'
     # create output dir
