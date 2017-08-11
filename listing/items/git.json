@@ -1,0 +1,10 @@
+{
+    "name": "Git",
+    "version": "2.14.0",
+    "type": "desktop",
+    "page": "https://git-scm.com/",
+    "download": {
+        "win": "https://github.com/git-for-windows/git/releases/download/v2.14.0.windows.2/Git-2.14.0.2-64-bit.exe",
+        "mac": "https://downloads.sourceforge.net/project/git-osx-installer/git-2.13.1-intel-universal-mavericks.dmg"
+    }
+}
